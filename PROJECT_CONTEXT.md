@@ -25,6 +25,13 @@ feedback.
 - Axios
 - TanStack Query
 - React Hook Form
+- React Router
+- nuqs
+- Radix UI Slot
+- Tailwind Variants
+- Tailwind Merge
+- Phosphor Icons
+- Vite SVGR
 
 ## Main Objective
 
@@ -155,8 +162,22 @@ Validation messages must be clear and written in English.
 ## Suggested Routes
 
 - `/` - Home page with reimbursement list, search, and pagination.
+- `/new-refund` - Page for creating a reimbursement request.
 - `/refunds/:id` - Reimbursement details page.
 - `/refunds/success` - Success page after creating a reimbursement request.
+
+## Current Implementation Notes
+
+The current scaffold includes:
+
+- `QueryClientProvider` for TanStack Query.
+- `NuqsAdapter` for query string state.
+- React Router with `MainLayout`.
+- Home and new refund routes.
+- Shared button, icon button, input, and navigation components.
+- Axios API helper configured from `VITE_API_URL`.
+- Refund and receipt API response types.
+- SVG React component imports through `vite-plugin-svgr`.
 
 ## UI Guidelines
 

@@ -17,7 +17,13 @@ support receipt upload and receipt display on the details page.
 - Axios
 - TanStack Query
 - React Hook Form
-- React Router
+- React Router 7
+- nuqs
+- Radix UI Slot
+- Tailwind Variants
+- Tailwind Merge
+- Phosphor Icons
+- Vite SVGR
 
 ## Requirements
 
@@ -92,10 +98,19 @@ Runs Biome lint rules only.
 
 ```txt
 src/
-  App.tsx        Application entry component
-  main.tsx       React bootstrap
-  styles.css     Tailwind CSS import and global styles
-public/          Static public assets
+  App.tsx                     App providers and route definitions
+  main.tsx                    React bootstrap
+  styles.css                  Tailwind theme tokens and global styles
+  assets/images/              Source image and SVG assets
+  components/                 Reusable UI primitives
+  contexts/
+    refunds/                  Refund search, hooks, and models
+    receipts/                 Receipt models
+  helpers/api.ts              Axios instance and fetcher helper
+  layouts/main.layout.tsx     Shared app shell and navigation
+  pages/                      Route-level pages
+  types/api.ts                API response contracts
+public/                       Static public assets
 PROJECT_CONTEXT.md
 AGENTS.md
 ```
@@ -103,7 +118,23 @@ AGENTS.md
 Use the `~/*` alias for imports from `src`:
 
 ```ts
-import { api } from "~/lib/api";
+import { api } from "~/helpers/api";
+```
+
+## Current Routes
+
+- `/` renders the refund requests page.
+- `/new-refund` renders the new refund request page.
+
+Routes are wrapped by `MainLayout`, `QueryClientProvider`, `NuqsAdapter`, and
+`BrowserRouter`.
+
+## Assets
+
+SVG files can be imported as React components with SVGR:
+
+```tsx
+import Logo from "~/assets/images/logo.svg?react";
 ```
 
 ## Project Context
