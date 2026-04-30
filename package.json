@@ -16,6 +16,7 @@
     "@tanstack/react-query": "5.100.6",
     "axios": "1.15.2",
     "lucide-react": "1.14.0",
+    "nuqs": "^2.8.9",
     "radix-ui": "^1.4.3",
     "react": "19.2.5",
     "react-dom": "19.2.5",
@@ -33,7 +34,7 @@
     "@vitejs/plugin-react": "6.0.1",
     "typescript": "6.0.3",
     "vite": "8.0.10",
-    "vite-plugin-svgr": "5.2.0"
+    "vite-plugin-svgr": "^5.2.0"
   },
   "packageManager": "pnpm@10.32.1"
 }
