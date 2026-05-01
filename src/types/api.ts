@@ -28,3 +28,40 @@ export type RefundIndex = {
     })[];
   };
 };
+
+export type RefundShow = {
+  refund: Refund & {
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    receipt: Receipt & {
+      refundId: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+};
+
+export type RefundCreate = {
+  refund: Refund & {
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    receipt: Receipt & {
+      refundId: string;
+      createdAt: string;
+      updatedAt: string;
+    };
+  };
+};
+
+export type RefundDelete = {
+  message: string;
+};
+
+export type ReceiptCreate = {
+  receipt: Receipt & {
+    createdAt: string;
+    updatedAt: string;
+  };
+};
