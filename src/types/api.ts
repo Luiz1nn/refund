@@ -55,6 +55,10 @@ export type RefundCreate = {
   };
 };
 
+export type RefundReceiptShow = {
+  url: string;
+};
+
 export type RefundDelete = {
   message: string;
 };
