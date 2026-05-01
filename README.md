@@ -20,10 +20,12 @@ support receipt upload and receipt display on the details page.
 - React Router 7
 - nuqs
 - Radix UI Slot
+- Sonner
 - Tailwind Variants
 - Tailwind Merge
 - Phosphor Icons
 - Vite SVGR
+- Zod
 
 ## Requirements
 
@@ -104,8 +106,8 @@ src/
   assets/images/              Source image and SVG assets
   components/                 Reusable UI primitives
   contexts/
-    refunds/                  Refund search, hooks, and models
-    receipts/                 Receipt models
+    refunds/                  Refund components, hooks, models, and schemas
+    receipts/                 Receipt hooks, models, and schemas
   helpers/api.ts              Axios instance and fetcher helper
   layouts/main.layout.tsx     Shared app shell and navigation
   pages/                      Route-level pages
@@ -126,25 +128,29 @@ import { api } from "~/helpers/api";
 Implemented:
 
 - App providers and routing through React Router, TanStack Query, and nuqs.
+- Sonner toaster setup for mutation feedback.
 - Shared layout with navigation between the home page and the new refund page.
 - Home page with refund search, paginated API loading, list skeletons, empty
   state, and links to future refund details routes.
+- New refund page with title, category, amount, and receipt file fields.
+- Zod validation for refund data and receipt file type/size.
+- Receipt upload followed by refund creation through API mutations.
+- Refund create/delete hooks with cache invalidation and toast feedback.
 - Axios API helper configured with `VITE_API_URL`.
-- Shared button, icon button, input, pagination, skeleton, and nav link
-  components.
+- Shared button, icon button, input, file input, select, pagination, skeleton,
+  and nav link components.
 
 Still planned:
 
-- Complete new refund form and receipt upload.
 - Refund details route at `/refunds/:id`.
-- Delete confirmation flow.
-- Success page after creating a refund request.
-- User-facing API error feedback.
+- Delete confirmation UI flow.
+- Success/confirmation route after creating a refund request.
+- User-facing API error feedback for list/detail queries.
 
 ## Current Routes
 
 - `/` renders the refund requests page.
-- `/new-refund` renders the scaffold for the new refund request page.
+- `/new-refund` renders the new refund request form.
 
 Routes are wrapped by `MainLayout`, `QueryClientProvider`, `NuqsAdapter`, and
 `BrowserRouter`.

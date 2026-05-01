@@ -28,10 +28,12 @@ feedback.
 - React Router
 - nuqs
 - Radix UI Slot
+- Sonner
 - Tailwind Variants
 - Tailwind Merge
 - Phosphor Icons
 - Vite SVGR
+- Zod
 
 ## Main Objective
 
@@ -157,7 +159,8 @@ Validation must cover:
 - Receipt file type.
 - Receipt file size limit.
 
-Validation messages must be clear and written in English.
+Validation messages must be clear and written in the same language as the
+application UI.
 
 ## Suggested Routes
 
@@ -172,26 +175,32 @@ The current scaffold includes:
 
 - `QueryClientProvider` for TanStack Query.
 - `NuqsAdapter` for query string state.
+- `Toaster` from Sonner for mutation feedback.
 - React Router with `MainLayout`.
-- Home and new refund routes. The new refund route is currently only a page
-  scaffold.
+- Home and new refund routes.
 - Home page refund listing with API loading state, skeleton rows, empty state,
   search by `q`, and page navigation through the `page` query string.
-- Shared button, icon button, input, pagination, skeleton, and navigation
-  components.
+- New refund page form with title, category, amount, and receipt file fields.
+- Zod schemas for refund and receipt validation, including receipt type and 2
+  MB size limit.
+- Receipt upload through `/receipts`, followed by refund creation through
+  `/refunds`.
+- Refund show, create, and delete hook support with cache invalidation and toast
+  feedback for mutations.
+- Shared button, icon button, input, file input, select, pagination, skeleton,
+  and navigation components.
 - Axios API helper configured from `VITE_API_URL`.
 - Refund and receipt API response types.
 - SVG React component imports through `vite-plugin-svgr`.
 
 Not implemented yet:
 
-- Complete create reimbursement form.
-- Receipt upload validation and submission.
 - Reimbursement details route.
 - Receipt display.
-- Delete confirmation flow.
-- Success page.
-- User-facing API error feedback.
+- Delete confirmation UI flow.
+- Success/confirmation route. The current create flow navigates to
+  `/confirmation`, but that route is not registered yet.
+- User-facing API error feedback for list/detail queries.
 
 ## UI Guidelines
 
