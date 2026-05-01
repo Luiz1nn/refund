@@ -173,11 +173,25 @@ The current scaffold includes:
 - `QueryClientProvider` for TanStack Query.
 - `NuqsAdapter` for query string state.
 - React Router with `MainLayout`.
-- Home and new refund routes.
-- Shared button, icon button, input, and navigation components.
+- Home and new refund routes. The new refund route is currently only a page
+  scaffold.
+- Home page refund listing with API loading state, skeleton rows, empty state,
+  search by `q`, and page navigation through the `page` query string.
+- Shared button, icon button, input, pagination, skeleton, and navigation
+  components.
 - Axios API helper configured from `VITE_API_URL`.
 - Refund and receipt API response types.
 - SVG React component imports through `vite-plugin-svgr`.
+
+Not implemented yet:
+
+- Complete create reimbursement form.
+- Receipt upload validation and submission.
+- Reimbursement details route.
+- Receipt display.
+- Delete confirmation flow.
+- Success page.
+- User-facing API error feedback.
 
 ## UI Guidelines
 

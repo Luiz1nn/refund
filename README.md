@@ -121,10 +121,30 @@ Use the `~/*` alias for imports from `src`:
 import { api } from "~/helpers/api";
 ```
 
+## Current Implementation
+
+Implemented:
+
+- App providers and routing through React Router, TanStack Query, and nuqs.
+- Shared layout with navigation between the home page and the new refund page.
+- Home page with refund search, paginated API loading, list skeletons, empty
+  state, and links to future refund details routes.
+- Axios API helper configured with `VITE_API_URL`.
+- Shared button, icon button, input, pagination, skeleton, and nav link
+  components.
+
+Still planned:
+
+- Complete new refund form and receipt upload.
+- Refund details route at `/refunds/:id`.
+- Delete confirmation flow.
+- Success page after creating a refund request.
+- User-facing API error feedback.
+
 ## Current Routes
 
 - `/` renders the refund requests page.
-- `/new-refund` renders the new refund request page.
+- `/new-refund` renders the scaffold for the new refund request page.
 
 Routes are wrapped by `MainLayout`, `QueryClientProvider`, `NuqsAdapter`, and
 `BrowserRouter`.
