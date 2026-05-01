@@ -12,7 +12,7 @@ file, which can later be viewed from the request details page.
 
 This challenge reinforces core React concepts and introduces patterns commonly
 used in production applications, such as API consumption, async state
-management, form validation, file uploads, pagination, search, modals, and user
+management, schema validation, file uploads, pagination, search, modals, and user
 feedback.
 
 ## Tech Stack
@@ -24,7 +24,6 @@ feedback.
 - BiomeJS
 - Axios
 - TanStack Query
-- React Hook Form
 - React Router
 - nuqs
 - Radix UI Slot
@@ -79,7 +78,7 @@ The form must include:
 - Category.
 - Receipt file.
 
-The form must use React Hook Form with validation rules.
+The form uses Zod schemas for validation.
 
 ### Receipt Upload
 
@@ -149,7 +148,7 @@ The application must handle API failures and display clear messages to the user.
 
 ## Forms And Validation
 
-Forms must be implemented with React Hook Form.
+Forms use native submit handling with Zod validation.
 
 Validation must cover:
 
@@ -182,21 +181,24 @@ The current scaffold includes:
 - Home page refund listing with API loading state, skeleton rows, empty state,
   search by `q`, and page navigation through the `page` query string.
 - New refund page form with title, category, amount, and receipt file fields.
-- Zod schemas for refund and receipt validation, including receipt type and 2
-  MB size limit.
+- Combined Zod validation for refund data and receipt validation, including
+  receipt type and 2 MB size limit.
 - Receipt upload through `/receipts`, followed by refund creation through
-  `/refunds`.
+  `/refunds`, both managed as TanStack Query mutations.
 - Confirmation page after successful refund creation.
 - Refund details page with read-only title, category, and amount fields.
 - Receipt access through `/receipts/download/:receiptId`, opened in a new
   browser tab against `VITE_API_URL`.
 - Delete confirmation dialog that deletes the refund, invalidates refund list
   cache, shows toast feedback, and redirects to `/`.
-- Refund index, show, create, delete, and receipt download hook support.
+- Focused refund index, details query, create, delete, and receipt download
+  hook support.
 - Shared button, icon button, input, file input, select, pagination, skeleton,
-  confirmation dialog, and navigation components.
+  confirmation dialog, form field, page card, and navigation components.
 - Axios API helper configured from `VITE_API_URL`.
-- Refund and receipt API response types.
+- Deduplicated refund and receipt API response types.
+- Refund category values typed from the Zod schema and reused by models,
+  helpers, and select options.
 - SVG React component imports through `vite-plugin-svgr`.
 
 Not implemented yet:
@@ -237,7 +239,7 @@ This project should help practice:
 - Structuring a frontend project.
 - Consuming APIs with Axios.
 - Managing async server state with TanStack Query.
-- Building validated forms with React Hook Form.
+- Building validated forms with Zod.
 - Handling file uploads.
 - Implementing search and pagination.
 - Creating modal-based workflows.

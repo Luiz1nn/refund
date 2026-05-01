@@ -16,7 +16,6 @@ support receipt upload and receipt display on the details page.
 - BiomeJS
 - Axios
 - TanStack Query
-- React Hook Form
 - React Router 7
 - nuqs
 - Radix UI Slot
@@ -104,7 +103,7 @@ src/
   main.tsx                    React bootstrap
   styles.css                  Tailwind theme tokens and global styles
   assets/images/              Source image and SVG assets
-  components/                 Reusable UI primitives
+  components/                 Reusable UI primitives and shared form/page UI
   contexts/
     refunds/                  Refund components, hooks, models, and schemas
     receipts/                 Receipt hooks, models, and schemas
@@ -133,18 +132,19 @@ Implemented:
 - Home page with refund search, paginated API loading, list skeletons, empty
   state, and links to refund details.
 - New refund page with title, category, amount, and receipt file fields.
-- Zod validation for refund data and receipt file type/size.
-- Receipt upload followed by refund creation through API mutations.
+- Combined Zod validation for refund data and receipt file type/size.
+- Receipt upload followed by refund creation through TanStack Query mutations.
 - Confirmation page shown after creating a refund request.
 - Refund details page with read-only refund fields, receipt access, loading
   skeletons, and delete action.
 - Receipt download URL lookup for opening uploaded receipts.
 - Delete confirmation dialog with cache invalidation, redirect, and toast
   feedback.
-- Refund create/delete hooks with cache invalidation and toast feedback.
+- Focused refund query, create, and delete hooks with cache invalidation and
+  toast feedback.
 - Axios API helper configured with `VITE_API_URL`.
 - Shared button, icon button, input, file input, select, pagination, skeleton,
-  confirmation dialog, and nav link components.
+  confirmation dialog, form field, page card, and nav link components.
 
 Still planned:
 
