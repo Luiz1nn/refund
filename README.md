@@ -131,29 +131,37 @@ Implemented:
 - Sonner toaster setup for mutation feedback.
 - Shared layout with navigation between the home page and the new refund page.
 - Home page with refund search, paginated API loading, list skeletons, empty
-  state, and links to future refund details routes.
+  state, and links to refund details.
 - New refund page with title, category, amount, and receipt file fields.
 - Zod validation for refund data and receipt file type/size.
 - Receipt upload followed by refund creation through API mutations.
+- Confirmation page shown after creating a refund request.
+- Refund details page with read-only refund fields, receipt access, loading
+  skeletons, and delete action.
+- Receipt download URL lookup for opening uploaded receipts.
+- Delete confirmation dialog with cache invalidation, redirect, and toast
+  feedback.
 - Refund create/delete hooks with cache invalidation and toast feedback.
 - Axios API helper configured with `VITE_API_URL`.
 - Shared button, icon button, input, file input, select, pagination, skeleton,
-  and nav link components.
+  confirmation dialog, and nav link components.
 
 Still planned:
 
-- Refund details route at `/refunds/:id`.
-- Delete confirmation UI flow.
-- Success/confirmation route after creating a refund request.
 - User-facing API error feedback for list/detail queries.
+- Additional details fields, such as author information and creation date, when
+  they are exposed in the UI.
 
 ## Current Routes
 
 - `/` renders the refund requests page.
 - `/new-refund` renders the new refund request form.
+- `/confirmation` renders the successful creation confirmation page.
+- `/refunds/:id` renders the refund details page.
+- `/components` renders an unwrapped component playground.
 
 Routes are wrapped by `MainLayout`, `QueryClientProvider`, `NuqsAdapter`, and
-`BrowserRouter`.
+`BrowserRouter`, except for the `/components` playground route.
 
 ## Assets
 

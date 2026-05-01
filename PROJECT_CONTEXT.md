@@ -64,12 +64,13 @@ It must include:
 - A reimbursement list.
 - Pagination controls.
 - A search field to filter requests by the author name.
-- A way to open the create reimbursement modal.
+- Navigation to the create reimbursement page.
 - Navigation to the reimbursement details page.
 
-### Create Reimbursement Modal
+### Create Reimbursement Page
 
-The create reimbursement flow must be presented in a modal.
+The create reimbursement flow is implemented as a dedicated page at
+`/new-refund`.
 
 The form must include:
 
@@ -127,7 +128,7 @@ After confirmation, the application must:
 ### Success Page
 
 After successfully creating a reimbursement request, the application must show a
-success page confirming that the request was registered.
+confirmation page confirming that the request was registered.
 
 ## API Integration
 
@@ -177,7 +178,7 @@ The current scaffold includes:
 - `NuqsAdapter` for query string state.
 - `Toaster` from Sonner for mutation feedback.
 - React Router with `MainLayout`.
-- Home and new refund routes.
+- Home, new refund, confirmation, details, and component playground routes.
 - Home page refund listing with API loading state, skeleton rows, empty state,
   search by `q`, and page navigation through the `page` query string.
 - New refund page form with title, category, amount, and receipt file fields.
@@ -185,22 +186,23 @@ The current scaffold includes:
   MB size limit.
 - Receipt upload through `/receipts`, followed by refund creation through
   `/refunds`.
-- Refund show, create, and delete hook support with cache invalidation and toast
-  feedback for mutations.
+- Confirmation page after successful refund creation.
+- Refund details page with read-only title, category, and amount fields.
+- Receipt access through `/receipts/download/:receiptId`, opened in a new
+  browser tab against `VITE_API_URL`.
+- Delete confirmation dialog that deletes the refund, invalidates refund list
+  cache, shows toast feedback, and redirects to `/`.
+- Refund index, show, create, delete, and receipt download hook support.
 - Shared button, icon button, input, file input, select, pagination, skeleton,
-  and navigation components.
+  confirmation dialog, and navigation components.
 - Axios API helper configured from `VITE_API_URL`.
 - Refund and receipt API response types.
 - SVG React component imports through `vite-plugin-svgr`.
 
 Not implemented yet:
 
-- Reimbursement details route.
-- Receipt display.
-- Delete confirmation UI flow.
-- Success/confirmation route. The current create flow navigates to
-  `/confirmation`, but that route is not registered yet.
 - User-facing API error feedback for list/detail queries.
+- Author information and creation date display on the details page.
 
 ## UI Guidelines
 
@@ -213,7 +215,7 @@ Recommended UI direction:
 - Easy-to-scan reimbursement list.
 - Clear status, loading, empty, and error states.
 - Accessible form fields and buttons.
-- Modal flows for creation and delete confirmation.
+- Dedicated page flow for creation and modal flow for delete confirmation.
 - Responsive behavior for mobile and desktop.
 
 ## Code Quality Guidelines
@@ -222,7 +224,7 @@ Recommended UI direction:
 - Prefer reusable hooks for API queries and mutations.
 - Keep API functions isolated from UI components.
 - Use descriptive names in English.
-- Keep user-facing text in English.
+- Keep user-facing text consistent with the existing Portuguese UI.
 - Use Tailwind CSS utility classes consistently.
 - Use BiomeJS for formatting and linting.
 - Avoid unrelated abstractions until they are needed.

@@ -7,9 +7,10 @@ This is a React + Vite + TypeScript frontend for the Refund System challenge.
 - `src/main.tsx` bootstraps the React application.
 - `src/App.tsx` configures React Query, nuqs, React Router, and app routes.
 - `src/layouts/` contains route shells such as `MainLayout`.
-- `src/pages/` contains route-level pages, currently `/` and `/new-refund`.
+- `src/pages/` contains route-level pages, currently `/`, `/new-refund`,
+  `/confirmation`, `/refunds/:id`, and the unwrapped `/components` playground.
 - `src/components/` contains shared UI primitives such as buttons, inputs,
-  selects, file inputs, pagination, and skeleton states.
+  selects, file inputs, pagination, confirmation dialogs, and skeleton states.
 - `src/contexts/` groups feature code by domain, such as refunds and receipts,
   including hooks, models, schemas, and feature components.
 - `src/helpers/api.ts` contains the Axios instance and shared fetcher.
@@ -54,6 +55,9 @@ Prefer `tailwind-variants` for component variants and `tailwind-merge` when
 combining conditional Tailwind classes.
 Use Zod schemas for form validation and keep user-facing validation messages in
 the same language as the current UI.
+
+The current UI is written in Portuguese, so new user-facing strings should stay
+consistent with that language unless the product direction changes.
 
 ## Testing Guidelines
 
