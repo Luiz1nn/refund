@@ -1,6 +1,7 @@
 import { CloudArrowUpIcon } from "@phosphor-icons/react";
 import { type ComponentProps, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { FieldError } from "./form-field";
 
 type Props = ComponentProps<"input"> & {
   labelText?: string;
@@ -47,11 +48,7 @@ export function FileInput({
         </div>
       </div>
 
-      {error && (
-        <span className="absolute normal-case bottom-0 left-0 translate-y-full text-sm font-medium text-green-100">
-          {error}
-        </span>
-      )}
+      <FieldError error={error} />
     </label>
   );
 }

@@ -1,24 +1,27 @@
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import type { ReceiptNewFormSchema } from "~/contexts/receipts/schemas";
 import { api } from "~/helpers/api";
 import type { ReceiptCreate } from "~/types/api";
 
 export default function useReceipt() {
-  async function createReceipt(payload: ReceiptNewFormSchema) {
-    try {
-      const formData = new FormData();
-      formData.append("receiptFile", payload.receiptFile);
+  const { mutateAsync: createReceipt, isPending: isCreatingReceipt } =
+    useMutation({
+      mutationFn: async (payload: ReceiptNewFormSchema) => {
+        const formData = new FormData();
+        formData.append("receiptFile", payload.receiptFile);
 
-      const receipt = await api.post<ReceiptCreate>("/receipts", formData);
+        const receipt = await api.post<ReceiptCreate>("/receipts", formData);
 
-      return receipt.data;
-    } catch (error) {
-      toast.error("Erro ao cadastrar comprovante.");
-      throw error;
-    }
-  }
+        return receipt.data;
+      },
+      onError: () => {
+        toast.error("Erro ao cadastrar comprovante.");
+      },
+    });
 
   return {
     createReceipt,
+    isCreatingReceipt,
   };
 }

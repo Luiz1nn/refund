@@ -1,25 +1,23 @@
-import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "~/helpers/api";
 import type { RefundReceiptShow } from "~/types/api";
 
 export function useRefundReceipt() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: fetchRefundReceipt, isPending: isLoading } = useMutation(
+    {
+      mutationFn: async (receiptId: string) => {
+        const response = await api.get<RefundReceiptShow>(
+          `/receipts/download/${receiptId}`,
+        );
 
-  async function fetchRefundReceipt(receiptId: string) {
-    try {
-      setIsLoading(true);
-      const response = await api.get<RefundReceiptShow>(
-        `/receipts/download/${receiptId}`,
-      );
-      return response.data;
-    } catch (error) {
-      toast.error("Erro ao buscar comprovante do reembolso.");
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  }
+        return response.data;
+      },
+      onError: () => {
+        toast.error("Erro ao buscar comprovante do reembolso.");
+      },
+    },
+  );
 
   return {
     fetchRefundReceipt,

@@ -5,8 +5,15 @@ import {
   ReceiptIcon,
   WrenchIcon,
 } from "@phosphor-icons/react";
+import type { RefundCategory } from "~/contexts/refunds/schemas";
 
-export const categoryIcons = {
+export const categoryIcons: Record<
+  RefundCategory,
+  {
+    icon: typeof ForkKnifeIcon;
+    label: string;
+  }
+> = {
   food: {
     icon: ForkKnifeIcon,
     label: "Alimentação",
@@ -32,6 +39,6 @@ export const categoryIcons = {
 export const categoryOptions = Object.entries(categoryIcons).map(
   ([key, value]) => ({
     label: value.label,
-    value: key,
+    value: key as RefundCategory,
   }),
 );

@@ -1,5 +1,6 @@
 import { CaretDownIcon, CheckIcon } from "@phosphor-icons/react";
 import { Select } from "radix-ui";
+import { FieldError } from "./form-field";
 
 type Option = {
   value: string;
@@ -26,11 +27,7 @@ export function SelectInput({ labelText, options, error, ...props }: Props) {
           </Select.Icon>
         </div>
 
-        {error && (
-          <span className="absolute normal-case bottom-0 left-0 translate-y-full text-sm font-medium text-green-100">
-            {error}
-          </span>
-        )}
+        <FieldError error={error} />
       </Select.Trigger>
 
       <Select.Portal>

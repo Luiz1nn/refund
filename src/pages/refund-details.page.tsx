@@ -1,7 +1,5 @@
 import { FileIcon } from "@phosphor-icons/react";
-import type { ComponentProps } from "react";
 import { useNavigate, useParams } from "react-router";
-import { twMerge } from "tailwind-merge";
 import { Button } from "~/components/button";
 import {
   ConfirmAlertDialogAction,
@@ -14,16 +12,22 @@ import {
   ConfirmAlertDialogTitle,
   ConfirmAlertDialogTrigger,
 } from "~/components/confirm-dialog";
+import { FieldSkeleton } from "~/components/form-field";
 import { Input } from "~/components/input";
+import { PageCard } from "~/components/page-card";
 import { SelectInput } from "~/components/select";
-import Skeleton from "~/components/skeleton";
 import { categoryOptions } from "~/contexts/refunds/helpers";
-import useRefund from "~/contexts/refunds/hooks/use-refund";
+import {
+  useDeleteRefund,
+  useRefundQuery,
+} from "~/contexts/refunds/hooks/use-refund";
 import { useRefundReceipt } from "~/contexts/refunds/hooks/use-refund-receipt";
+import type { RefundWithReceipt } from "~/types/api";
 
 export function RefundDetailsPage() {
   const { id } = useParams();
-  const { refund, isLoading, isDeleting } = useRefund(id);
+  const { refund, isLoading } = useRefundQuery(id);
+  const { deleteRefund, isDeletingRefund } = useDeleteRefund();
   const { fetchRefundReceipt, isLoading: isLoadingReceipt } =
     useRefundReceipt();
 
@@ -35,19 +39,13 @@ export function RefundDetailsPage() {
   }
 
   return (
-    <div className="rounded-2xl bg-gray-500 max-w-lg mx-auto p-10 flex flex-col gap-10">
-      <div className="flex flex-col gap-3">
-        <h1 className="font-bold text-xl text-gray-100">
-          Solicitação de reembolso
-        </h1>
-        <span className="text-sm text-gray-200">
-          Dados da despesa para solicitar reembolso.
-        </span>
-      </div>
-
+    <PageCard
+      title="Solicitação de reembolso"
+      description="Dados da despesa para solicitar reembolso."
+    >
       <div className="flex flex-col gap-8">
         {isLoading ? (
-          <InputSkeleton labelText="Nome da solicitação" />
+          <FieldSkeleton labelText="Nome da solicitação" />
         ) : (
           refund && (
             <Input
@@ -61,7 +59,7 @@ export function RefundDetailsPage() {
 
         <div className="flex items-center gap-4">
           {isLoading ? (
-            <InputSkeleton labelText="Categoria" />
+            <FieldSkeleton labelText="Categoria" />
           ) : (
             refund && (
               <SelectInput
@@ -75,7 +73,7 @@ export function RefundDetailsPage() {
           )}
 
           {isLoading ? (
-            <InputSkeleton
+            <FieldSkeleton
               labelText="Valor"
               containerProps={{ className: "max-w-[154px]" }}
               className="w-10"
@@ -99,7 +97,7 @@ export function RefundDetailsPage() {
 
         <div className="space-y-4">
           <Button
-            disabled={isLoading || isDeleting || isLoadingReceipt}
+            disabled={isLoading || isDeletingRefund || isLoadingReceipt}
             variant="outline"
             onClick={handleOpenReceipt}
           >
@@ -107,21 +105,36 @@ export function RefundDetailsPage() {
             {isLoadingReceipt ? "Abrindo comprovante..." : "Abrir comprovante"}
           </Button>
 
-          <ConfirmFileDeletionDialog />
+          <ConfirmFileDeletionDialog
+            refund={refund}
+            isLoading={isLoading}
+            isDeleting={isDeletingRefund}
+            onDelete={deleteRefund}
+          />
         </div>
       </div>
-    </div>
+    </PageCard>
   );
 }
 
-function ConfirmFileDeletionDialog() {
-  const { id } = useParams();
+type ConfirmFileDeletionDialogProps = {
+  refund?: RefundWithReceipt;
+  isLoading: boolean;
+  isDeleting: boolean;
+  onDelete: (refundId: string) => Promise<unknown>;
+};
+
+function ConfirmFileDeletionDialog({
+  refund,
+  isLoading,
+  isDeleting,
+  onDelete,
+}: ConfirmFileDeletionDialogProps) {
   const navigate = useNavigate();
-  const { refund, isLoading, deleteRefund, isDeleting } = useRefund(id);
 
   async function handleDelete() {
     if (refund) {
-      await deleteRefund(refund.id);
+      await onDelete(refund.id);
       navigate("/");
     }
   }
@@ -158,31 +171,5 @@ function ConfirmFileDeletionDialog() {
         </ConfirmAlertDialogContent>
       </ConfirmAlertDialogPortal>
     </ConfirmAlertDialogRoot>
-  );
-}
-
-type Props = {
-  labelText?: string;
-  className?: string;
-  containerProps?: ComponentProps<"div">;
-};
-
-function InputSkeleton({ labelText, className, containerProps }: Props) {
-  const propsWithoutClassName = { ...containerProps };
-  delete propsWithoutClassName.className;
-
-  return (
-    <div
-      className={twMerge(
-        "text-gray-200 text-2xs uppercase flex flex-col gap-2 w-full",
-        containerProps?.className,
-      )}
-      {...propsWithoutClassName}
-    >
-      {labelText}
-      <div className="rounded-lg border h-12 border-gray-300 py-4 pl-4 text-sm flex items-center">
-        <Skeleton className={twMerge("w-20", className)}>-</Skeleton>
-      </div>
-    </div>
   );
 }

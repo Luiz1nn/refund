@@ -13,46 +13,35 @@ export type PaginationMeta = {
   previousPageUrl: string | null;
 };
 
+export type ReceiptWithTimestamps = Receipt & {
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RefundReceipt = ReceiptWithTimestamps & {
+  refundId: string;
+};
+
+export type RefundWithReceipt = Refund & {
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+  receipt: RefundReceipt;
+};
+
 export type RefundIndex = {
   refunds: {
     meta: PaginationMeta;
-    data: (Refund & {
-      deletedAt: string | null;
-      createdAt: string;
-      updatedAt: string;
-      receipt: Receipt & {
-        refundId: string;
-        createdAt: string;
-        updatedAt: string;
-      };
-    })[];
+    data: RefundWithReceipt[];
   };
 };
 
 export type RefundShow = {
-  refund: Refund & {
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    receipt: Receipt & {
-      refundId: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-  };
+  refund: RefundWithReceipt;
 };
 
 export type RefundCreate = {
-  refund: Refund & {
-    deletedAt: string | null;
-    createdAt: string;
-    updatedAt: string;
-    receipt: Receipt & {
-      refundId: string;
-      createdAt: string;
-      updatedAt: string;
-    };
-  };
+  refund: RefundWithReceipt;
 };
 
 export type RefundReceiptShow = {
@@ -64,8 +53,5 @@ export type RefundDelete = {
 };
 
 export type ReceiptCreate = {
-  receipt: Receipt & {
-    createdAt: string;
-    updatedAt: string;
-  };
+  receipt: ReceiptWithTimestamps;
 };

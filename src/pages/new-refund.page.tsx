@@ -1,36 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import z from "zod";
+import { z } from "zod";
 import type { $ZodFlattenedError } from "zod/v4/core";
 import { Button } from "~/components/button";
 import { FileInput } from "~/components/file-input";
 import { Input } from "~/components/input";
+import { PageCard } from "~/components/page-card";
 import { SelectInput } from "~/components/select";
 import useReceipt from "~/contexts/receipts/hooks/use-receipt";
 import { receiptNewFormSchema } from "~/contexts/receipts/schemas";
 import { categoryOptions } from "~/contexts/refunds/helpers";
-import useRefund from "~/contexts/refunds/hooks/use-refund";
-import {
-  refundReceiptSchema,
-  refundStepOneSchema,
-} from "~/contexts/refunds/schemas";
+import { useCreateRefund } from "~/contexts/refunds/hooks/use-refund";
+import { refundStepOneSchema } from "~/contexts/refunds/schemas";
 
-type ValidationErrors = $ZodFlattenedError<
-  z.infer<typeof refundStepOneSchema>
-> &
-  $ZodFlattenedError<z.infer<typeof receiptNewFormSchema>>;
+const newRefundFormSchema = refundStepOneSchema.extend({
+  receiptFile: receiptNewFormSchema.shape.receiptFile,
+});
+
+type ValidationErrors = $ZodFlattenedError<z.infer<typeof newRefundFormSchema>>;
 
 export function NewRefundPage() {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationErrors, setValidationErrors] =
     useState<ValidationErrors | null>(null);
 
-  const { createRefund } = useRefund();
-  const { createReceipt } = useReceipt();
+  const { createRefund, isCreatingRefund } = useCreateRefund();
+  const { createReceipt, isCreatingReceipt } = useReceipt();
+  const isSubmitting = isCreatingRefund || isCreatingReceipt;
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    setIsSubmitting(true);
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -39,66 +37,42 @@ export function NewRefundPage() {
     const value = Number(formData.get("value"));
     const file = formData.get("file");
 
-    const receiptValidation = receiptNewFormSchema.safeParse({
-      receiptFile: file,
-    });
-    const refundStepOneValidation = refundStepOneSchema.safeParse({
+    const formValidation = newRefundFormSchema.safeParse({
       title,
       category,
       value,
+      receiptFile: file,
     });
 
-    if (refundStepOneValidation.error) {
-      const formattedErrors = z.flattenError(refundStepOneValidation.error);
+    if (!formValidation.success) {
+      const formattedErrors = z.flattenError(formValidation.error);
       setValidationErrors(formattedErrors);
-      setIsSubmitting(false);
       return;
     }
 
-    if (receiptValidation.error) {
-      const formattedErrors = z.flattenError(receiptValidation.error);
-      setValidationErrors(formattedErrors);
-      setIsSubmitting(false);
-      return;
-    }
+    setValidationErrors(null);
 
     try {
       const { receipt } = await createReceipt({
-        receiptFile: receiptValidation.data.receiptFile,
+        receiptFile: formValidation.data.receiptFile,
       });
 
-      const refundReceiptValidation = refundReceiptSchema.safeParse({
+      await createRefund({
+        category: formValidation.data.category,
+        title: formValidation.data.title,
+        value: formValidation.data.value,
         receipt: receipt.id,
       });
 
-      if (!refundReceiptValidation.success) {
-        return;
-      }
-
-      await createRefund({
-        category: refundStepOneValidation.data.category,
-        title: refundStepOneValidation.data.title,
-        value: refundStepOneValidation.data.value,
-        receipt: refundReceiptValidation.data.receipt,
-      });
-
       navigate("/confirmation");
-    } catch {
-      setIsSubmitting(false);
-    }
+    } catch {}
   }
 
   return (
-    <div className="rounded-2xl bg-gray-500 max-w-lg mx-auto p-10 flex flex-col gap-10">
-      <div className="flex flex-col gap-3">
-        <h1 className="font-bold text-xl text-gray-100">
-          Nova solicitação de reembolso
-        </h1>
-        <span className="text-sm text-gray-200">
-          Dados da despesa para solicitar reembolso.
-        </span>
-      </div>
-
+    <PageCard
+      title="Nova solicitação de reembolso"
+      description="Dados da despesa para solicitar reembolso."
+    >
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <fieldset
           disabled={isSubmitting}
@@ -144,6 +118,6 @@ export function NewRefundPage() {
           {isSubmitting ? "Enviando..." : "Enviar"}
         </Button>
       </form>
-    </div>
+    </PageCard>
   );
 }
