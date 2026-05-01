@@ -3,6 +3,7 @@ import { NuqsAdapter } from "nuqs/adapters/react-router/v7";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "sonner";
 import { MainLayout } from "~/layouts/main.layout";
+import { ComponentsPage } from "~/pages/components.page";
 import { ConfirmationPage } from "~/pages/confirmation.page";
 import { HomePage } from "~/pages/home.page";
 import { NewRefundPage } from "~/pages/new-refund.page";
@@ -17,6 +18,8 @@ export function App() {
         <Toaster richColors />
         <BrowserRouter>
           <Routes>
+            <Route path="/components" element={<ComponentsPage />} />
+
             <Route element={<MainLayout />}>
               <Route element={<HomePage />} path="/" />
               <Route path="/new-refund" element={<NewRefundPage />} />
